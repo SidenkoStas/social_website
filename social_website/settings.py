@@ -38,7 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "account.apps.AccountConfig", # Аккаунты
+    "account.apps.AccountConfig", # Профиль пользователей
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,7 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, "templates")],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -131,3 +131,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "account:dashboard"
+LOGIN_URL = "account:login"
+LOGOUT_URL = "account:logout"

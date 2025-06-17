@@ -1,0 +1,12 @@
+.env
+.vscode
+.venv
+.idea
+__pycache__
+media
+staticfiles
+*/migrations
+!*/migrations/__init__.py
+db.sqlite3
+venv.sh
+docker.txt

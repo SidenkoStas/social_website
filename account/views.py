@@ -5,6 +5,11 @@ from django.http import HttpResponse
 from .forms import LoginForm
 
 def user_login(request):
+    """
+    Представление для входа на сайт.
+    Выдаёт сообщения об ошибке при неправильных данных пользователя
+    и отсутствия пользователя в базе данных.
+    """
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -27,6 +32,10 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
+    """
+    Страница профиля.
+    Только если пользователь авторизоваался.
+    """
     return render(
         request, "account/dashboard.html",
         {"section": "dashboard"}

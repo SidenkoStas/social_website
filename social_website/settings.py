@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-from django.conf.global_settings import EMAIL_BACKEND
+from django.conf.global_settings import EMAIL_BACKEND, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -137,4 +137,10 @@ LOGIN_URL = "account:login"
 LOGOUT_URL = "account:logout"
 
 PASSWORD_RESET_TIMEOUT = 600 # Сколько работает ссылка в секудндах
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_USE_SSL = env("EMAIL_USE_SSL")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")

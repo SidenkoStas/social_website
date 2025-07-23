@@ -5,4 +5,9 @@
 {% block content %}
   <h1>Панель управления</h1>
   <p>Добро пожаловать в вашу панель управления.</p>
+  <p>
+    Вы можете <a href="{% url "account:edit" %}">отредактировать</a> 
+    ваш профиль или <a href="{% url "account:password_change" %}">изменить</a> 
+    ваш пароль.
+  </p>
 {% endblock content %}

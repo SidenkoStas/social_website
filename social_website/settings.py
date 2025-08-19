@@ -32,7 +32,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ("mysite.com", 'localhost', '127.0.0.1')
 
 
 # Application definition
@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "social_django",
+    "django_extensions",
 
 ]
 
@@ -136,7 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "account.authentication.EmailAuthBackend"
+    "account.authentication.EmailAuthBackend",
+    "social_core.backends.google.GoogleOAuth2",
 )
 
 LOGIN_REDIRECT_URL = "account:dashboard"

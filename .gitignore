@@ -10,3 +10,5 @@ staticfiles
 db.sqlite3
 venv.sh
 docker.txt
+cert.crt
+cert.key

@@ -45,8 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "images.apps.ImagesConfig",
+    # Сторонние библиотеки:
     "social_django",
     "django_extensions",
+
 
 ]
 

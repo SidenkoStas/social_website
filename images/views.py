@@ -12,7 +12,7 @@ def create_image(request):
         request (HttpRequest): Объект HTTP-запроса.
 
     Returns:
-        HttpResponse: Ответ с рендером шаблона или перенаправлением.
+        HttpResponse: Ответ с рендером шаблона.
 
     Поведение:
         - При POST-запросе:

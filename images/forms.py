@@ -52,12 +52,12 @@ class ImageCreateForm(forms.ModelForm):
         image = super().save(commit=False)
         image_url = self.cleaned_data["url"]
         title = slugify(self.cleaned_data["title"])
-        extension = image_url.rspit(".", 1)[-1].lower()
+        extension = image_url.rsplit(".", 1)[-1].lower()
         image_name = f"{title}.{extension}"
         response = requests.get(image_url)
         image.image.save(
             image_name,
-            ContentFile(response),
+            ContentFile(response.content),
             save=False
         )
         if commit:

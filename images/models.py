@@ -3,6 +3,7 @@ from tabnanny import verbose
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Image(models.Model):
     """Модель для хранения информации об изображении.
@@ -54,6 +55,9 @@ class Image(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse("images:detail", args=(self.id, self.slug))
 
     def __str__(self):
         return f"{self.title}"

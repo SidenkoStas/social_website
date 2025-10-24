@@ -1,9 +1,12 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from pip._internal import req
 from .forms import ImageCreateForm
 from .models import Image
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 @login_required
 def create_image(request):
@@ -43,7 +46,44 @@ def create_image(request):
         )
 
 def image_detail(request, id, slug):
+    """
+    Отображает детали конкретного изображения.
+
+    Эта функция-представление (view) получает объект изображения по его идентификатору (id)
+    и слагу (slug). Если объект не найден, возвращается HTTP-ответ 404. Иначе отображается
+    шаблон `images/detail.html` с контекстом, включающим текущее изображение и раздел.
+
+    Args:
+        request (HttpRequest): Объект HTTP-запроса.
+        id (int): Уникальный идентификатор изображения.
+        slug (str): URL-дружественный идентификатор изображения.
+
+    Returns:
+        HttpResponse: Отрендеренный HTML-шаблон с контекстом.
+
+    Raises:
+        Http404: Если изображение с указанными id и slug не существует.
+    """
     image = get_object_or_404(Image, id=id, slug=slug)
     return render(
         request, "images/detail.html", {"section": "images", "image": image}
         )
+
+@login_required
+@require_POST
+def image_like(request):
+    image_id = request.POST.get("id")
+    action = request.POST.get("action")
+
+    if image_id and action:
+        try:
+            image = Image.objects.get(id=image_id)
+            if action == "like":
+                image.users_like.add(request.user)
+            else:
+                image.users_like.remove(request.user)
+            return JsonResponse({"status": "ok"})
+        except Image.DoesNotExist:
+            pass
+    return JsonResponse({"status": "error"})
+

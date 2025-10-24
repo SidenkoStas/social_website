@@ -51,5 +51,18 @@
     {% block content %}
   {% endblock content %}
 </div>
+
+<!-- Скрипты -->
+<script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js">
+</script>
+<script>
+  const csrftoken = Cookies.get("csrftoken");
+  document.addEventistener("DOMContentLoaded", (event) =>{
+    //DOM загружен
+    {% block domready %}
+    {% endblock domready %}
+  })
+</script>
+
 </body>
 </html>

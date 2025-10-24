@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     # Сторонние библиотеки:
     "social_django",
     "django_extensions",
+    "easy_thumbnails",
 ]
 
 MIDDLEWARE = [

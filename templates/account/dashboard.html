@@ -8,7 +8,7 @@
   {% with total_images_created=request.user.images_created.count %}
     <p>
       Вы сохранили {{ total_images_created }} 
-      изображение{{ total_images_created|pluralize }}
+      изображен{{ total_images_created|pluralize:"ие,ий" }}
     </p>  
   {% endwith %}
   <p>Перетащите кнопку на панель закладок вашего браузера для возможности

@@ -1,12 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from pip._internal import req
 from .forms import ImageCreateForm
 from .models import Image
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 @login_required
 def create_image(request):
@@ -72,6 +71,25 @@ def image_detail(request, id, slug):
 @login_required
 @require_POST
 def image_like(request):
+    """
+    Обрабатывает POST-запрос для лайка/дизлайка изображения.
+
+    Функция принимает ID изображения и действие (like/dislike) из POST-данных,
+    проверяет существование изображения и выполняет соответствующее действие:
+    добавляет или удаляет текущего пользователя из списка лайков.
+
+    Parameters:
+        request (HttpRequest): POST-запрос, содержащий:
+            - 'id' (str): Идентификатор изображения.
+            - 'action' (str): Действие ('like' или 'dislike').
+
+    Returns:
+        JsonResponse: JSON-ответ со статусом 'ok' при успешной операции,
+                      'error' при отсутствии данных или ошибке.
+
+    Raises:
+        Image.DoesNotExist: Если изображение с указанным ID не найдено.
+    """
     image_id = request.POST.get("id")
     action = request.POST.get("action")
 
@@ -87,3 +105,29 @@ def image_like(request):
             pass
     return JsonResponse({"status": "error"})
 
+@login_required
+def image_list(request):
+    images = Image.objects.all()
+    paginator = Paginator(images, 8)
+    page = request.GET.get('page')
+    images_only = request.GET.get("images_only")
+    try:
+        images = paginator.page(page)
+    except PageNotAnInteger:
+        images = paginator.page(1)
+    except EmptyPage:
+        if images_only:
+            return HttpResponse("")
+        images = paginator.page(paginator.num_pages)
+    if images_only:
+        return render(
+            request,
+            "images/list_images.html",
+            {"section": "images", "images": images}
+            )
+    return render(
+        request,
+        "images/list.html",
+        {"section": "images", "images": images}
+    )
+            

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}все Изображения{% endblock title %}
+
+{% block content %}
+  <h1>Добавленные изображения</h1>
+  <div class="image-list">
+    {% include "images/list_images.html" %}
+  </div>
+{% endblock content %}

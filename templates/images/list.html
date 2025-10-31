@@ -34,7 +34,7 @@ window.addEventListener("scroll", function(e) {
   }
 });
 
-//запус события прокрутки\scrool
-const scroolEvent = new Event("scrool");
-window.dispatchEvent(scroolEvent);
+//запус события прокрутки\scroll в первый раз, принудительно
+const scrollEvent = new Event("scroll");
+window.dispatchEvent(scrollEvent);
 {% endblock domready %}

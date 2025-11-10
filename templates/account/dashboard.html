@@ -22,4 +22,10 @@
     ваш профиль или <a href="{% url "account:password_change" %}">изменить</a> 
     ваш пароль.
   </p>
+  <h2>Лента событий</h2>
+  <div id="action-list">
+    {% for action in actions %}
+      {% include "actions/detail.html" %}
+    {% endfor %}
+  </div>
 {% endblock content %}

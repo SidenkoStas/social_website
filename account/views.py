@@ -1,3 +1,4 @@
+from venv import create
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
@@ -8,6 +9,8 @@ from .forms import (
     LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
     )
 from .models import Profile, Contact
+from actions.utils import create_action
+from actions.models import Action
 
 User = get_user_model()
 
@@ -52,6 +55,7 @@ def register(request):
             new_user.set_password(user_form.cleaned_data["password"])
             new_user.save()
             Profile.objects.create(user=new_user)
+            create_action(new_user, "Пользователь зарегистрировался")
             context = {"new_user": new_user}
             return render(
                 request, "account/register_done.html", context
@@ -68,11 +72,20 @@ def register(request):
 def dashboard(request):
     """
     Страница профиля.
+    С отслеживанием действий пользователей.
     Только если пользователь авторизоваался.
     """
+    # Если пользователь не подписан ни на кого, то отображаются все действия.
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)
+        actions = actions.select_related(
+            "user", "user__profile"
+            ).prefetch_related("target")[:10]
     return render(
         request, "account/dashboard.html",
-        {"section": "dashboard"}
+        {"section": "dashboard", "actions": actions}
     )
 
 @login_required
@@ -137,6 +150,7 @@ def user_follow(request):
                 Contact.objects.get_or_create(
                     user_from=request.user, user_to=user
                     )
+                create_action(request.user, "Подписался", user)
             elif action == "unfollow":
                 Contact.objects.filter(
                     user_from=request.user, user_to=user

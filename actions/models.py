@@ -24,3 +24,5 @@ class Action(models.Model):
             models.Index(fields=("target_ct", "target_id"))
         )
         ordering = ("-created",)
+        verbose_name = "Действие"
+        verbose_name_plural = "Действия"

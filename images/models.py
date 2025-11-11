@@ -44,9 +44,11 @@ class Image(models.Model):
         blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
+    total_likes = models.PositiveIntegerField(default=0)
 
     class Meta:
-        indexes = [models.Index(fields=["-created"])]
+        indexes = (models.Index(fields=["-created"]),
+                   models.Index(fields=["-total_likes"]))
         ordering = ["-created"]
         verbose_name = "Изображение"
         verbose_name_plural = "Изображения"

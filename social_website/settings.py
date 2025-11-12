@@ -17,7 +17,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ("mysite.com", 'localhost', '127.0.0.1')
+ALLOWED_HOSTS = ["mysite.com", 'localhost', '127.0.0.1']
+
+INTERNAL_IPS = ["mysite.com", '127.0.0.1'] 
 
 # Application definition
 
@@ -33,12 +35,14 @@ INSTALLED_APPS = [
     "images.apps.ImagesConfig",
     "actions.apps.ActionsConfig",
     # Сторонние библиотеки:
+    "debug_toolbar",
     "social_django",
     "django_extensions",
     "easy_thumbnails",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
